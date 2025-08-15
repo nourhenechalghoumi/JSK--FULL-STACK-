@@ -155,9 +155,22 @@ docker-compose up -d
 Create a `.env` file in the root directory:
 
 ```env
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
+# Server
 PORT=5000
 NODE_ENV=development
+FRONTEND_URL=http://localhost:5173
+
+# Authentication
+JWT_SECRET=235a05d66e3b3c49d444ebb4524416b6
+JWT_EXPIRES_IN=24h
+
+# PostgreSQL Database
+DB_HOST=database
+DB_PORT=5432
+DB_NAME=projectdb
+DB_USER=postgres
+DB_PASSWORD=postgres
+
 ```
 
 ## 📝 License
