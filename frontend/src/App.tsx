@@ -16,11 +16,12 @@ import Hiring from './pages/client/Hiring';
 import Contact from './pages/client/Contact';
 import Login from './pages/client/Login';
 
-import AdminDashboard from './pages/admin/Dashbord';
+// Admin Pages
+import AdminLayout from './pages/admin/AdminLayout';
+import Dashboard from './pages/admin/Dashboard';
 import AdminTeams from './pages/admin/Teams';
 import AdminEvents from './pages/admin/Events';
 import AdminStaff from './pages/admin/Staff';
-import AdminLayout from './pages/admin/AdminLayout';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -34,7 +35,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen bg-dark-800">
           <Navbar />
           <main className="flex-grow">
             <Routes>
@@ -50,7 +51,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
 
-              {/* Admin Routes (all protected) */}
+              {/* Admin Routes */}
               <Route
                 path="/admin/*"
                 element={
@@ -59,14 +60,19 @@ function App() {
                   </ProtectedRoute>
                 }
               >
-                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="dashboard" element={<Dashboard />} />
                 <Route path="teams" element={<AdminTeams />} />
                 <Route path="events" element={<AdminEvents />} />
                 <Route path="staff" element={<AdminStaff />} />
+                <Route path="leadership" element={<div className="text-accent-500">Leadership Management - Coming Soon</div>} />
+                <Route path="sponsors" element={<div className="text-accent-500">Sponsors Management - Coming Soon</div>} />
+                <Route path="applications" element={<div className="text-accent-500">Applications Management - Coming Soon</div>} />
+                <Route path="messages" element={<div className="text-accent-500">Messages Management - Coming Soon</div>} />
               </Route>
 
               {/* 404 fallback */}
-              <Route path="*" element={<div>Page not found</div>} />
+              <Route path="*" element={<div className="text-center py-16 text-accent-500">Page not found</div>} />
             </Routes>
           </main>
           <Footer />

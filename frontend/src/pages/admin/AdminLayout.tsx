@@ -1,12 +1,15 @@
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import AdminNavbar from '../../components/admin/AdminNavbar';
+import AdminSidebar from '../../components/admin/AdminSidebar';
 
 const AdminLayout = () => {
   return (
-    <div className="flex flex-col min-h-screen">
-      <AdminNavbar /> {/* Admin-specific navigation */}
-      <main className="flex-grow p-6 bg-gray-100">
-        <Outlet /> {/* Renders nested admin routes like dashboard, teams, events */}
+    <div className="flex h-screen bg-dark-800 overflow-hidden">
+      <AdminSidebar />
+      <main className="flex-1 overflow-y-auto">
+        <div className="p-6 animate-fade-in">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
