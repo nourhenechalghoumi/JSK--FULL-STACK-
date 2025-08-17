@@ -22,6 +22,10 @@ import Dashboard from './pages/admin/Dashboard';
 import AdminTeams from './pages/admin/Teams';
 import AdminEvents from './pages/admin/Events';
 import AdminStaff from './pages/admin/Staff';
+import AdminLeadership from './pages/admin/Leadership';
+import AdminSponsors from './pages/admin/Sponsors';
+import AdminApplications from './pages/admin/Applications';
+import AdminMessages from './pages/admin/Messages';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -65,10 +69,10 @@ function App() {
                 <Route path="teams" element={<AdminTeams />} />
                 <Route path="events" element={<AdminEvents />} />
                 <Route path="staff" element={<AdminStaff />} />
-                <Route path="leadership" element={<div className="text-accent-500">Leadership Management - Coming Soon</div>} />
-                <Route path="sponsors" element={<div className="text-accent-500">Sponsors Management - Coming Soon</div>} />
-                <Route path="applications" element={<div className="text-accent-500">Applications Management - Coming Soon</div>} />
-                <Route path="messages" element={<div className="text-accent-500">Messages Management - Coming Soon</div>} />
+                <Route path="leadership" element={<AdminLeadership />} />
+                <Route path="sponsors" element={<AdminSponsors />} />
+                <Route path="applications" element={<AdminApplications />} />
+                <Route path="messages" element={<AdminMessages />} />
               </Route>
 
               {/* 404 fallback */}

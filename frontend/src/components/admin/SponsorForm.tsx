@@ -1,64 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-interface Staff {
+interface Sponsor {
   id?: number;
   name: string;
-  position: string;
-  bio: string;
-  photo_url?: string;
+  logo_url?: string;
+  link: string;
 }
 
 interface Props {
-  editingStaff: Staff | null;
+  editingSponsor: Sponsor | null;
   onSuccess: () => void;
   onCancel: () => void;
 }
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
-const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
-  const [formData, setFormData] = useState<Staff>({
+const SponsorForm = ({ editingSponsor, onSuccess, onCancel }: Props) => {
+  const [formData, setFormData] = useState<Sponsor>({
     name: '',
-    position: '',
-    bio: '',
-    photo_url: ''
+    logo_url: '',
+    link: ''
   });
 
   useEffect(() => {
-    if (editingStaff) {
-      setFormData(editingStaff);
+    if (editingSponsor) {
+      setFormData(editingSponsor);
     } else {
       setFormData({
         name: '',
-        position: '',
-        bio: '',
-        photo_url: ''
+        logo_url: '',
+        link: ''
       });
     }
-  }, [editingStaff]);
+  }, [editingSponsor]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     
     try {
-      if (editingStaff) {
-        await axios.put(`${API_BASE_URL}/staff/${editingStaff.id}`, formData, {
+      if (editingSponsor) {
+        await axios.put(`${API_BASE_URL}/sponsors/${editingSponsor.id}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       } else {
-        await axios.post(`${API_BASE_URL}/staff`, formData, {
+        await axios.post(`${API_BASE_URL}/sponsors`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
       onSuccess();
     } catch (error) {
-      console.error('Failed to save staff:', error);
+      console.error('Failed to save sponsor:', error);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -68,65 +65,49 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
   return (
     <div className="bg-dark-900 rounded-lg p-6 border border-primary-500/20">
       <h3 className="text-xl font-bold text-accent-500 mb-6">
-        {editingStaff ? 'Edit Staff Member' : 'Add New Staff Member'}
+        {editingSponsor ? 'Edit Sponsor' : 'Add New Sponsor'}
       </h3>
       
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-accent-400 mb-2">
-              Full Name *
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-4 py-2 bg-dark-800 border border-primary-500/20 rounded-lg text-accent-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-accent-400 mb-2">
-              Position
-            </label>
-            <input
-              type="text"
-              name="position"
-              value={formData.position}
-              onChange={handleChange}
-              placeholder="e.g., Team Manager, Coach"
-              className="w-full px-4 py-2 bg-dark-800 border border-primary-500/20 rounded-lg text-accent-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            />
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-accent-400 mb-2">
+            Sponsor Name *
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full px-4 py-2 bg-dark-800 border border-primary-500/20 rounded-lg text-accent-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            required
+          />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-accent-400 mb-2">
-            Photo URL
+            Logo URL
           </label>
           <input
             type="url"
-            name="photo_url"
-            value={formData.photo_url}
+            name="logo_url"
+            value={formData.logo_url}
             onChange={handleChange}
-            placeholder="https://example.com/photo.jpg"
+            placeholder="https://example.com/logo.png"
             className="w-full px-4 py-2 bg-dark-800 border border-primary-500/20 rounded-lg text-accent-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-accent-400 mb-2">
-            Bio
+            Website URL
           </label>
-          <textarea
-            name="bio"
-            value={formData.bio}
+          <input
+            type="url"
+            name="link"
+            value={formData.link}
             onChange={handleChange}
-            rows={4}
+            placeholder="https://sponsor-website.com"
             className="w-full px-4 py-2 bg-dark-800 border border-primary-500/20 rounded-lg text-accent-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            placeholder="Brief biography..."
           />
         </div>
 
@@ -135,7 +116,7 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
             type="submit"
             className="bg-primary-500 hover:bg-primary-600 text-accent-500 px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:shadow-lg"
           >
-            {editingStaff ? 'Update Staff' : 'Add Staff'}
+            {editingSponsor ? 'Update Sponsor' : 'Add Sponsor'}
           </button>
           <button
             type="button"
@@ -150,4 +131,4 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
   );
 };
 
-export default StaffForm;
+export default SponsorForm;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-interface Staff {
+interface Leader {
   id?: number;
   name: string;
   position: string;
@@ -10,15 +10,15 @@ interface Staff {
 }
 
 interface Props {
-  editingStaff: Staff | null;
+  editingLeader: Leader | null;
   onSuccess: () => void;
   onCancel: () => void;
 }
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
-const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
-  const [formData, setFormData] = useState<Staff>({
+const LeadershipForm = ({ editingLeader, onSuccess, onCancel }: Props) => {
+  const [formData, setFormData] = useState<Leader>({
     name: '',
     position: '',
     bio: '',
@@ -26,8 +26,8 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
   });
 
   useEffect(() => {
-    if (editingStaff) {
-      setFormData(editingStaff);
+    if (editingLeader) {
+      setFormData(editingLeader);
     } else {
       setFormData({
         name: '',
@@ -36,25 +36,25 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
         photo_url: ''
       });
     }
-  }, [editingStaff]);
+  }, [editingLeader]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     
     try {
-      if (editingStaff) {
-        await axios.put(`${API_BASE_URL}/staff/${editingStaff.id}`, formData, {
+      if (editingLeader) {
+        await axios.put(`${API_BASE_URL}/leadership/${editingLeader.id}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       } else {
-        await axios.post(`${API_BASE_URL}/staff`, formData, {
+        await axios.post(`${API_BASE_URL}/leadership`, formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
       onSuccess();
     } catch (error) {
-      console.error('Failed to save staff:', error);
+      console.error('Failed to save leader:', error);
     }
   };
 
@@ -68,7 +68,7 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
   return (
     <div className="bg-dark-900 rounded-lg p-6 border border-primary-500/20">
       <h3 className="text-xl font-bold text-accent-500 mb-6">
-        {editingStaff ? 'Edit Staff Member' : 'Add New Staff Member'}
+        {editingLeader ? 'Edit Leader' : 'Add New Leader'}
       </h3>
       
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -96,7 +96,7 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
               name="position"
               value={formData.position}
               onChange={handleChange}
-              placeholder="e.g., Team Manager, Coach"
+              placeholder="e.g., CEO, CTO, President"
               className="w-full px-4 py-2 bg-dark-800 border border-primary-500/20 rounded-lg text-accent-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
@@ -126,7 +126,7 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
             onChange={handleChange}
             rows={4}
             className="w-full px-4 py-2 bg-dark-800 border border-primary-500/20 rounded-lg text-accent-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            placeholder="Brief biography..."
+            placeholder="Leadership biography and achievements..."
           />
         </div>
 
@@ -135,7 +135,7 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
             type="submit"
             className="bg-primary-500 hover:bg-primary-600 text-accent-500 px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:shadow-lg"
           >
-            {editingStaff ? 'Update Staff' : 'Add Staff'}
+            {editingLeader ? 'Update Leader' : 'Add Leader'}
           </button>
           <button
             type="button"
@@ -150,4 +150,4 @@ const StaffForm = ({ editingStaff, onSuccess, onCancel }: Props) => {
   );
 };
 
-export default StaffForm;
+export default LeadershipForm;
